@@ -5,12 +5,16 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
+# Must be first Streamlit command
+st.set_page_config(page_title="Wine Quality Predictor", layout="centered")
+
 BASE_DIR = Path(__file__).resolve().parent  # app/
 MODEL_PATH = BASE_DIR.parent / "models" / "wine_quality_model.joblib"
 FEATURES_PATH = BASE_DIR.parent / "models" / "feature_names.joblib"
 
 model = joblib.load(MODEL_PATH)
 features = joblib.load(FEATURES_PATH)
+
 @st.cache_resource
 def load_model():
     model = joblib.load(MODEL_PATH)
@@ -18,8 +22,6 @@ def load_model():
     return model, features
 
 model, features = load_model()
-
-st.set_page_config(page_title="Wine Quality Predictor", layout="centered")
 
 st.title("Boutique Winery — Red Wine Quality Predictor")
 st.write("Enter the chemical attributes of a wine sample to predict if it's 'Good' (quality ≥ 7).")
@@ -54,4 +56,5 @@ if submitted:
         st.info("Moderate confidence — borderline. Consider additional testing.")
     else:
         st.warning("Low probability — sample is unlikely to meet premium standard.")
+
 
