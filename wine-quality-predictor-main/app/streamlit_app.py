@@ -5,10 +5,12 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-# Load model and feature names
-MODEL_PATH = Path("models/wine_quality_model.joblib")
-FEATURES_PATH = Path("models/feature_names.joblib")
+BASE_DIR = Path(__file__).resolve().parent  # app/
+MODEL_PATH = BASE_DIR.parent / "models" / "wine_quality_model.joblib"
+FEATURES_PATH = BASE_DIR.parent / "models" / "feature_names.joblib"
 
+model = joblib.load(MODEL_PATH)
+features = joblib.load(FEATURES_PATH)
 @st.cache_resource
 def load_model():
     model = joblib.load(MODEL_PATH)
@@ -52,3 +54,4 @@ if submitted:
         st.info("Moderate confidence — borderline. Consider additional testing.")
     else:
         st.warning("Low probability — sample is unlikely to meet premium standard.")
+
